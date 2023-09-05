@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect
+from flask import Flask, render_template, url_for, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, login_required, LoginManager, logout_user, current_user
 from flask_bcrypt import Bcrypt
@@ -35,7 +35,7 @@ class User(db.Model, UserMixin):
 def home():
     return render_template('home.html') #this goes into /templates and looks for "home.html"
 
-@app.route("/login") 
+@app.route("/login", methods=['GET', 'POST']) 
 def login():
     form = LoginForm()
 
@@ -49,15 +49,17 @@ def login():
     return render_template('login.html', title='login', form=form)
 
 
-@app.route("/register") 
+@app.route("/register", methods=['GET', 'POST']) 
 def register():
     form = RegisterForm()
 
     if form.validate_on_submit(): # stores the hashed version of the password on submission
-        hashed_password = bcrypt.generate_password_hash(form.password.data)
-        new_user = User(username=form.username.data, password=hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
+        flash(f'Account Created for {form.username.data}!', 'success')
+        # hashed_password = bcrypt.generate_password_hash(form.password.data)
+        # new_user = User(username=form.username.data, password=hashed_password)
+        # db.session.add(new_user)
+        # db.session.commit()
+
         return redirect(url_for('login'))
     
     return render_template('register.html', title='Register', form=form)

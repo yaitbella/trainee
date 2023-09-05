@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1> Registration Page </h1>
+
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        {{ form.username }} <!-- accessing the username var in LoginForm()-->
+        {{ form.password }} <!-- accessing the password var in LoginForm()-->
+        {{ form.submit }} <!-- accessing the submit var in LoginForm()-->
+    </form>
+
+    <a href="{{url_for('login')}}"> Already Have an Account? Login </a> <br>                 
+{% endblock content %}

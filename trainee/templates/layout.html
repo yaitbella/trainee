@@ -25,18 +25,17 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarToggle">
                 <div class="navbar-nav mr-auto">
-                <a class="nav-item nav-link" href="/">Home</a>
-                <a class="nav-item nav-link" href="/about">About</a>
+                    <a class="nav-item nav-link" href="/">Home</a>
                 </div>
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
                     {% if current_user.is_authenticated %}
-                        <a class="nav-item nav-link" href="{{ url_for('profile')}}">Profile</a>    
-                        <a class="nav-item nav-link" href="{{ url_for('logout')}}">Logout</a>
-                        <a class="nav-item nav-link" href="{{ url_for('new_session')}}"> New Session </a>
+                        <a class="nav-item nav-link" href="{{ url_for('users.profile')}}">Profile</a>    
+                        <a class="nav-item nav-link" href="{{ url_for('users.logout')}}">Logout</a>
+                        <a class="nav-item nav-link" href="{{ url_for('sessions.new_session')}}"> New Session </a>
                     {% else %}
-                        <a class="nav-item nav-link" href="{{ url_for('login')}}">Login</a>
-                        <a class="nav-item nav-link" href="{{ url_for('register')}}">Register</a>
+                        <a class="nav-item nav-link" href="{{ url_for('users.login')}}">Login</a>
+                        <a class="nav-item nav-link" href="{{ url_for('users.register')}}">Register</a>
                     {% endif %}
                 </div>
             </div>

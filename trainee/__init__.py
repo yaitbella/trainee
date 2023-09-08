@@ -1,33 +1,39 @@
-import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
 
+from trainee.config import Config
 
 
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db' #connects appflie to datebase
-app.config['SECRET_KEY'] = 'secretkey'
-db = SQLAlchemy(app) #creates database instance
-bcrypt = Bcrypt(app)
-
-login_manager = LoginManager(app) # allows our app + flask to work together
-login_manager.login_view = 'login'
+db = SQLAlchemy() #creates database instance
+bcrypt = Bcrypt()
+login_manager = LoginManager() # allows our app + flask to work together
+login_manager.login_view = 'users.login'
 login_manager.login_message_category = "info" 
 
-app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER')
-app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS')
-mail = Mail(app)
-# login_manager.init_app(app) 
+mail = Mail()
 
-# @login_manager.user_loader # used to reload the user object from the user ID stored in the session
-# def load_user(user_id):
-#     return User.query.get(int(user_id))
 
-from trainee import routes #this is at bottom to avoid circular imports with "app"
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(Config)
+
+    db.init_app(app)
+    bcrypt.init_app(app)
+    login_manager.init_app(app)
+    mail.init_app(app)
+
+    # import blueprint objects here and register them with our route
+    from trainee.users.routes import users
+    from trainee.sessions.routes import sessions
+    from trainee.main.routes import main
+    from trainee.errors.handlers import errors
+
+    app.register_blueprint(users)
+    app.register_blueprint(sessions)
+    app.register_blueprint(main)
+    app.register_blueprint(errors)
+
+    return app

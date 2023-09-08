@@ -1,9 +1,11 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
-from wtforms.validators import InputRequired, Length, ValidationError, DataRequired, Email, EqualTo
 from flask_wtf.file import FileField, FileAllowed
-from trainee.models import User
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms.validators import InputRequired, Length, ValidationError, DataRequired, Email, EqualTo
+
 from flask_login import current_user
+
+from trainee.models import User
 
 class RegisterForm(FlaskForm): #inherits from flask form
     username = StringField(validators=[
@@ -50,12 +52,7 @@ class UpdateAccountForm(FlaskForm): #inherits from flask form
             existing_user_email = User.query.filter_by(email=email.data).first()
             if existing_user_email:
                 raise ValidationError('Email is already taken mate')
-            
-class SessionForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    location = TextAreaField('location', validators=[DataRequired()])
-    submit = SubmitField('Post Session')
-
+       
 class RequestResetForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Request Password Reset')

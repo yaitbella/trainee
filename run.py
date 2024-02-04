@@ -8,4 +8,5 @@ if __name__ == '__main__':
 # new SQLAlchmy to create db files // NOTE: YOU HAVE TO RUN THESE BEFORE DOING ANYTHING WITH DB
 # from trainee import app, db
 # app.app_context().push()
-# db.create_all()
+# db.create_all() OR db.drop_all() to delete
+

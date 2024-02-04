@@ -13,8 +13,11 @@ def new_session():
     form = SessionForm()
     if form.validate_on_submit():
         sesh = Session(title=form.title.data, 
-                        location=form.location.data, #TODO:
-                        user_id = current_user.id)
+                        location=form.location.data,
+                        user_id = current_user.id,
+                        skillFocus = form.skillFocus.data,
+                        session_date=form.session_date.data, 
+                        session_time=form.session_time.data)
         db.session.add(sesh)
         db.session.commit()
         flash('your session has been created!', 'success')

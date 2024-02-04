@@ -5,8 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSS Bootstrap Link-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css' )}}">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css' )}}"> -->
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="120x120" href="/static/volt_boostrap/apps/static/assets/img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/volt_boostrap/apps/static/assets/img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/volt_boostrap/apps/static/assets/img/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="/static/volt_boostrap/apps/static/assets/img/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/static/volt_boostrap/apps/static/assets/img/favicon/safari-pinned-tab.svg" color="#ffffff">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
+
+    <link type="text/css" href="/static/volt_boostrap/apps/static/assets/vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <link type="text/css" href="/static/volt_boostrap/apps/static/assets/vendor/notyf/notyf.min.css" rel="stylesheet">
+    <link type="text/css" href="/static/volt_boostrap/apps/static/assets/css/volt.css" rel="stylesheet">
+
 
     {% if title %}
         <title>Trainee - {{ title }}</title>
@@ -15,33 +30,46 @@
     {% endif %}
 </head>
 <body>
-
-    <header class="site-header">
-        <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-            <div class="container">
-            <a class="navbar-brand mr-4" href="/">Flask Blog</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarToggle">
-                <div class="navbar-nav mr-auto">
-                    <a class="nav-item nav-link" href="/">Home</a>
+    <header class="header-global">
+        <nav id="navbar-main" aria-label="Primary navigation" class="navbar navbar-main navbar-expand-lg navbar-theme-primary pt-4 navbar-dark">
+            <div class="container position-relative">
+                <div class="navbar-collapse collapse mr-auto" id="navbar_global">
+                    <ul class="navbar-nav navbar-nav-hover align-items-lg-center">
+                        {% if current_user.is_authenticated %}
+                            <li class="nav-item mr-2">
+                                <a class="nav-item nav-link" href="{{ url_for('main.home')}}">Home</a>
+                            </li>
+                            <li class="nav-item mr-2">
+                                <a class="nav-item nav-link" href="{{ url_for('users.profile')}}">Profile</a> 
+                            </li>
+                        {% else %}
+                            <li class="nav-item mr-2">
+                                <a class="nav-item nav-link" href="{{ url_for('main.home')}}">Home</a>
+                            </li>
+                            <li class="nav-item mr-2">
+                                <a class="nav-item nav-link" href="{{ url_for('users.login')}}">Profile</a> 
+                            </li>
+                        {% endif %}
+                    </ul>
                 </div>
-                <!-- Navbar Right Side -->
-                <div class="navbar-nav">
+                <div class="d-flex align-items-center ml-auto">
                     {% if current_user.is_authenticated %}
-                        <a class="nav-item nav-link" href="{{ url_for('users.profile')}}">Profile</a>    
-                        <a class="nav-item nav-link" href="{{ url_for('users.logout')}}">Logout</a>
-                        <a class="nav-item nav-link" href="{{ url_for('sessions.new_session')}}"> New Session </a>
+                        <a href="{{ url_for('sessions.new_session')}}" class="btn btn-secondary text-dark mr-md-3">
+                        Create New Session
+                        </a>
+                        <a href="{{ url_for('users.logout')}}" class="btn btn-gray-100 text-dark mr-md-3">
+                        Logout
+                        </a>
                     {% else %}
-                        <a class="nav-item nav-link" href="{{ url_for('users.login')}}">Login</a>
-                        <a class="nav-item nav-link" href="{{ url_for('users.register')}}">Register</a>
+                        <span class="fas fa-rocket mr-2">
+                            <a href="{{ url_for('users.register')}}" class="btn btn-secondary text-dark mr-md-3">Get Started!</a>
+                            <a href="{{ url_for('users.login')}}" class="btn btn-white text-dark mr-md-3"> Sign In </a>
+                        </span>
                     {% endif %}
                 </div>
             </div>
-            </div>
         </nav>
-        </header>
+    </header>
 
     <main role="main" class="container">
     <div class="row">

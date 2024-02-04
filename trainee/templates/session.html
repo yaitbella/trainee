@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
   <article class="media content-section">
-    <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + session.author.image_file) }}">
+    <img class="avatar-xl rounded-circle mx-auto" src="{{ url_for('static', filename='profile_pics/' + session.author.image_file) }}">
     <div class="media-body">
       <div class="article-metadata">
         <a class="mr-2" href="{{ url_for('users.user_sessions', username=session.author.username) }}">{{ session.author.username }}</a>
@@ -10,12 +10,20 @@
             <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('sessions.update_session', session_id=session.id) }}">Update</a>
             <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
           </div>
+        {% else %}
+          <div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="#"> Join Session </a>
+          </div>
         {% endif %}
       </div>
       <h2 class="article-title">{{ session.title }}</h2>
-      <p class="article-content">{{ session.location }}</p>
+      <p> {{ session.location }} </p>
+      <p> {{ session.skillFocus }} </p>
+      <p> {{ session.session_date }} </p>
+      <p> {{ session.session_time }} </p>
     </div>
   </article>
+
   <!-- Modal -->
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

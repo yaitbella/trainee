@@ -67,3 +67,14 @@ def delete_session(session_id):
     db.session.commit()
     flash('Your session has been deleted!', 'success')
     return redirect(url_for('main.home'))
+
+@sessions.route("/session/<int:session_id>/join", methods=['POST'])
+def join_session(session_id):
+    session = Session.query.get_or_404(session_id)
+    if current_user in session.participants:
+        flash('You have already joined the session!', 'warning')
+    else:
+        session.particpants.append(current_user)
+    db.session.commit()
+    flash('You have joined the session!', 'success')
+    return redirect(url_for('sessions.session', session_id=session.id))

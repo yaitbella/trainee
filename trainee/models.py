@@ -1,4 +1,6 @@
 # declaring models doc: https://flask-sqlalchemy.palletsprojects.com/en/2.x/models/
+# many to many relationships sqlAlchemy: https://www.youtube.com/watch?v=47i-jzrrIGQ
+#                                        https://www.youtube.com/watch?v=IlkVu_LWGys
 
 from trainee import db, login_manager # goes into init.py and pulls db
 from flask import current_app
@@ -8,6 +10,11 @@ from itsdangerous import URLSafeTimedSerializer as Serializer
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+# asssociation table that allows Many To Many between User and Session
+user_session_table = db.Table('user_session_table', 
+                    db.Column('user_id', db.Integer, db.ForeignKey('user.id')), 
+                     db.Column('session_id', db.Integer, db.ForeignKey('session.id')))
 
 # 3 column table for the user login database
 # made it this far https://youtu.be/71EU8gnZqZQ?si=BoYsLeX3yzLg_ZVl&t=876
@@ -22,7 +29,7 @@ class User(db.Model, UserMixin):
     # following = db.relationship('Session', secondary=user_session, backref='followers')
 
     # creates a relationship between posts and Session
-    posts = db.relationship('Session', backref='author', lazy=True) 
+    sessions = db.relationship('Session', secondary= user_session_table, backref='author', lazy=True) 
     players = db.relationship('Player', backref='user', lazy=True)
 
     # TODO:figure out itsdangrous and python 3.11 compatability issue
@@ -63,4 +70,4 @@ class Player(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self): 
-        return f"Player('{self.position}', '{self.strong_foot}'"
+        return f"Player('{self.position}', '{self.strong_foot}')"

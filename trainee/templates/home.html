@@ -2,9 +2,9 @@
 {% block content %}
     {% for session in sessions.items %}
       <article>
-        <div class="row">
-            <div class="col-md-2">
-                <img class="avatar-lg rounded-circle mx-auto" src="{{ url_for('static', filename='profile_pics/' + session.author.image_file) }}">
+        <div class="card">
+            <div class="media content-section">
+                <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + session.author.image_file) }}">
                 <a class="ml-2" href="{{ url_for('users.user_sessions', username=session.author.username) }}">{{ session.author.username }}</a>
                 <p class="article-content">{{ session.session_time }}</p>
             </div>

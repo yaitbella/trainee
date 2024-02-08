@@ -4,9 +4,15 @@ app = create_app()
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
+# from trainee import create_app, db
+# from trainee.config import Config
+# app = create_app(Config)
 
-# new SQLAlchmy to create db files // NOTE: YOU HAVE TO RUN THESE BEFORE DOING ANYTHING WITH DB
-# from trainee import app, db
-# app.app_context().push()
-# db.create_all() OR db.drop_all() to delete
+# with app.app_context():
+#     db.create_all()
 
+# or
+
+# with app.app_context():
+#     db.drop_all()

@@ -1,3 +1,5 @@
+# declaring models doc: https://flask-sqlalchemy.palletsprojects.com/en/2.x/models/
+
 from trainee import db, login_manager # goes into init.py and pulls db
 from flask import current_app
 from flask_login import UserMixin # add required attributes and methods for loading user
@@ -6,10 +8,6 @@ from itsdangerous import URLSafeTimedSerializer as Serializer
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
-user_session = db.Table('user_session', 
-                        db.Column('user_id', db.Integer, db.ForeignKey('user.id')), 
-                        db.Column('session_id', db.Integer, db.ForeignKey('session_id')))
 
 # 3 column table for the user login database
 # made it this far https://youtu.be/71EU8gnZqZQ?si=BoYsLeX3yzLg_ZVl&t=876
@@ -24,7 +22,8 @@ class User(db.Model, UserMixin):
     # following = db.relationship('Session', secondary=user_session, backref='followers')
 
     # creates a relationship between posts and Session
-    posts = db.relationship('Session', secondary=user_session, backref='author', lazy=True) 
+    posts = db.relationship('Session', backref='author', lazy=True) 
+    players = db.relationship('Player', backref='user', lazy=True)
 
     # TODO:figure out itsdangrous and python 3.11 compatability issue
     def get_reset_token(self, expires_sec=1800):
@@ -55,3 +54,13 @@ class Session(db.Model):
 
     def __repr__(self): 
         return f"Session('{self.title}', '{self.location}', '{self.skillFocus}')"
+    
+class Player(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    position = db.Column(db.String(100), nullable = True, default='Bench Player')
+    strong_foot = db.Column(db.String(50), nullable = True, default='No Preferance')
+    
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def __repr__(self): 
+        return f"Player('{self.position}', '{self.strong_foot}'"

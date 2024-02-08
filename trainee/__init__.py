@@ -29,16 +29,16 @@ def create_app(config_class=Config):
     from trainee.users.routes import users
     from trainee.sessions.routes import sessions
     from trainee.main.routes import main
+    from trainee.players.routes import players
     from trainee.errors.handlers import errors
 
     app.register_blueprint(users)
     app.register_blueprint(sessions)
     app.register_blueprint(main)
     app.register_blueprint(errors)
+    app.register_blueprint(players)
 
-    from .models import User, Session
+    # from .models import User, Session
 
-    with app.app_context():
-        db.create_all()
         
     return app

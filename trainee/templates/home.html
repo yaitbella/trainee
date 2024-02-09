@@ -4,10 +4,11 @@
       <article>
         <div class="card m-3">
             <div class="media content-section">
-                <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}">
-                {{ current_user.username }}
-                <a class="ml-2" href="{{ url_for('users.user_sessions', username=session.author.username) }}">{{ session.author.username }}</a>
-                <p class="article-content ml-3">{{ session.session_time }}</p>
+                <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + 'default.jpeg') }}">
+                {% for author in session.author %}
+                  {{ author.username }}
+                {% endfor %}
+                <a class="ml-2" href="{{ url_for('users.user_sessions', username=session.author) }}">{{ session.author.username }}</a>
             </div>
             <div class="col-md-10">
                 <h4><a class="article-title" href="{{ url_for('sessions.session', session_id=session.id) }}">{{ session.title }}</a></h4>

@@ -25,11 +25,8 @@ class User(db.Model, UserMixin):
     image_file = db.Column(db.String(20), nullable=False, default = 'default.jpeg')
     password = db.Column(db.String(80), nullable=False)
 
-    # creates a relationship for association table
-    # following = db.relationship('Session', secondary=user_session, backref='followers')
-
     # creates a relationship between posts and Session
-    sessions = db.relationship('Session', secondary= user_session_table, backref='author', lazy=True) 
+    sessions = db.relationship('Session', secondary=user_session_table, backref='author', lazy=True) 
     players = db.relationship('Player', backref='user', lazy=True)
 
     # TODO:figure out itsdangrous and python 3.11 compatability issue
@@ -55,8 +52,9 @@ class Session(db.Model):
     location = db.Column(db.String(50), nullable = False)
     session_date = db.Column(db.Date, nullable = False)
     session_time = db.Column(db.Time, nullable = False)
-    # date_posted = db.Column(db.DateTime, nullable=False, default='datetime.utcnow')
     skillFocus = db.Column(db.String(200), nullable=False, default='No Preferance')
+    session_host = db.Column(db.Integer, nullable=False)
+    # date_posted = db.Column(db.DateTime, nullable=False, default='datetime.utcnow')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self): 

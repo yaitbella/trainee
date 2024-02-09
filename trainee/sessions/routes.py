@@ -17,7 +17,9 @@ def new_session():
                         user_id = current_user.id,
                         skillFocus = form.skillFocus.data,
                         session_date=form.session_date.data, 
-                        session_time=form.session_time.data)
+                        session_time=form.session_time.data,
+                        session_host=current_user.username)
+        
         db.session.add(sesh)
         db.session.commit()
         flash('your session has been created!', 'success')
@@ -39,7 +41,7 @@ def session(session_id):
 @login_required
 def update_session(session_id):
     session = Session.query.get_or_404(session_id)
-    if session.author != current_user:
+    if session.session_host != current_user.username:
         abort(403)
     form = SessionForm()
     if form.validate_on_submit():

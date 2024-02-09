@@ -27,7 +27,7 @@ class User(db.Model, UserMixin):
 
     # creates a relationship between posts and Session
     sessions = db.relationship('Session', secondary=user_session_table, backref='author', lazy=True) 
-    players = db.relationship('Player', backref='user', lazy=True)
+    # players = db.relationship('Player', backref='user', lazy=True)
 
     # TODO:figure out itsdangrous and python 3.11 compatability issue
     def get_reset_token(self, expires_sec=1800):
@@ -57,6 +57,8 @@ class Session(db.Model):
     # date_posted = db.Column(db.DateTime, nullable=False, default='datetime.utcnow')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+    participants = db.relationship('User', secondary=user_session_table, backref='joined_sessions', lazy=True)
+    
     def __repr__(self): 
         return f"Session('{self.title}', '{self.location}', '{self.skillFocus}')"
     

@@ -15,18 +15,19 @@
         <!-- viewing another user's session -->
         {% else %}
           <div>
-            <button type="button" class="btn btn-success">Join Session</button>
+            <a class="btn btn-success" href="{{ url_for('sessions.join_session', session_id=session.id) }}">Join Session!</a>
           </div>
         {% endif %}
       </div>
       <h2 class="article-title"> <u> {{ session.title }} </u> </h2>
+      <p> <b>Session Host: </b> {{ session.session_host }} </p>
       <p> <b>Location: </b> {{ session.location }} </p>
       <p> <b>Session Focus: </b> {{ session.skillFocus }} </p>
       <p> <b>Session Date: </b> {{ session.session_date }} at {{ session.session_time }} </p>
     </div>
   </article>
 
-  <!-- Modal -->
+  <!-- Modal that isn't workign right now -->
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">

@@ -23,17 +23,17 @@
                     <ul class="navbar-nav navbar-nav-hover align-items-lg-center">
                         {% if current_user.is_authenticated %}
                             <li class="nav-item mr-2">
-                                <a class="nav-item nav-link" href="{{ url_for('main.home')}}">Home</a>
+                                <a class="nav-item nav-link text-white" href="{{ url_for('main.home')}}">Home</a>
                             </li>
                             <li class="nav-item mr-2">
-                                <a class="nav-item nav-link" href="{{ url_for('users.profile')}}">Profile</a> 
+                                <a class="nav-item nav-link text-white" href="{{ url_for('users.profile')}}">Profile</a> 
                             </li>
                         {% else %}
                             <li class="nav-item mr-2">
-                                <a class="nav-item nav-link" href="{{ url_for('main.home')}}">Home</a>
+                                <a class="nav-item nav-link text-white" href="{{ url_for('main.home')}}">Home</a>
                             </li>
                             <li class="nav-item mr-2">
-                                <a class="nav-item nav-link" href="{{ url_for('users.login')}}">Profile</a> 
+                                <a class="nav-item nav-link text-white" href="{{ url_for('users.login')}}">Profile</a> 
                             </li>
                         {% endif %}
                     </ul>

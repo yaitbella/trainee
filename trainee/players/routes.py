@@ -13,7 +13,7 @@ from trainee.users.forms import (RegisterForm, LoginForm, UpdateAccountForm,
 from trainee.players.forms import PlayerForm
 from trainee.users.utils import save_picture, send_reset_email
 
-players=Blueprint('players', __name__)
+players=Blueprint('players', __name__) # creates 'players' Blueprint
 
 @players.route("/player", methods=['GET', 'POST'])
 @login_required

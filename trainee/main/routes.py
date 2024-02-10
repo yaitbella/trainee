@@ -2,7 +2,7 @@ from flask import render_template, request, Blueprint
 from flask_login import current_user
 from trainee.models import Session
 
-main=Blueprint('main', __name__)
+main=Blueprint('main', __name__) # creates 'main' Blueprint
 
 @main.route("/")
 @main.route("/home") # this is where you land; runs home() function

@@ -2,9 +2,9 @@
 {% block content %}
     {% for session in sessions %}
       <article>
-        <div class="card m-3">
-            <div class="media content-section">
-                <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + 'default.jpeg') }}">
+        <div class="card m-3 p-2">
+            <div class="col-md-10">
+                <img class="rounded-circle article-img m-2" src="{{ url_for('static', filename='profile_pics/' + 'default.jpeg') }}">
                 {% for author in session.author %}
                   {{ author.username }}
                 {% endfor %}
@@ -14,8 +14,8 @@
                 <h4><a class="article-title" href="{{ url_for('sessions.session', session_id=session.id) }}">{{ session.title }}</a></h4>
                 <p> <b>Location: </b> {{ session.location }} </p>
                 <p> <b>Session Focus: </b> {{ session.skillFocus }} </p>
-                <p> <b>Session Date: </b> {{ session.session_date }} at {{ session.session_time }} </p>
-                <p> <b>Player Count: </b> 0 / 10 </p>
+                <p> <b>Session Date: </b> {{ session.session_date }} at {{ session.session_time.strftime('%H:%M') }} </p>
+                <p> <b>Player Count: </b> {{ session.participants|length + 1}} / 10 </p>
             </div>
         </div>
     </article>

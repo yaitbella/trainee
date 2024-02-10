@@ -24,6 +24,12 @@
       <p> <b>Location: </b> {{ session.location }} </p>
       <p> <b>Session Focus: </b> {{ session.skillFocus }} </p>
       <p> <b>Session Date: </b> {{ session.session_date }} at {{ session.session_time }} </p>
+      <p> <b>Player Count: </b> {{ session.participants|length + 1}} / 10 </p>
+      <ul>
+        {% for player in session.participants %}
+          <li> {{ player.username }} </li>
+        {% endfor %}
+      </ul>
     </div>
   </article>
 

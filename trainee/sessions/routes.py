@@ -5,7 +5,7 @@ from trainee import db
 from trainee.models import Session
 from trainee.sessions.forms import SessionForm
 
-sessions=Blueprint('sessions', __name__)
+sessions=Blueprint('sessions', __name__) # creates 'sessions' Blueprint
 
 @sessions.route('/session/new', methods=['GET','POST'])
 @login_required

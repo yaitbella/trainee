@@ -19,3 +19,6 @@ if __name__ == '__main__':
 
 # TODO: 
     # fix delete session button
+    # fix profile picture routing problem
+    # add only 30 minute increments for session Times
+    # add ability to LEAVE a session after joining

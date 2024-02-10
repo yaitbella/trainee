@@ -78,7 +78,7 @@ def profile():
 def user_sessions(username):
     page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
-    sessions=Session.query.filter_by(author=user).paginate(page=page, per_page=5) #TODO: Session.query.order_by(Session.date_posted.desc())
+    sessions=Session.query.filter(Session.author.contains(user)).paginate(page=page, per_page=5) #TODO: Session.query.order_by(Session.date_posted.desc())
     return render_template('user_sessions.html', sessions=sessions, user=user) #this goes into /templates and looks for "home.html"
 
 

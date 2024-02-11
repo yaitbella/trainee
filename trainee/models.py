@@ -1,8 +1,9 @@
+#           ---     RESOURCES + DOCUMENTATION   ---             #
 # declaring models doc: https://flask-sqlalchemy.palletsprojects.com/en/2.x/models/
 # many to many relationships sqlAlchemy: https://www.youtube.com/watch?v=47i-jzrrIGQ
 #                                        https://www.youtube.com/watch?v=IlkVu_LWGys
 
-from trainee import db, login_manager # goes into init.py and pulls db
+from trainee import db, login_manager
 from flask import current_app
 from flask_login import UserMixin # add required attributes and methods for loading user
 from itsdangerous import URLSafeTimedSerializer as Serializer
@@ -11,13 +12,12 @@ from itsdangerous import URLSafeTimedSerializer as Serializer
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-# asssociation table that allows Many To Many between User and Session
+# asssociation table that creates Many To Many relationship between User and Session model
 user_session_table = db.Table('user_session_table', 
                     db.Column('user_id', db.Integer, db.ForeignKey('user.id')), 
                      db.Column('session_id', db.Integer, db.ForeignKey('session.id')))
 
-# 3 column table for the user login database
-# made it this far https://youtu.be/71EU8gnZqZQ?si=BoYsLeX3yzLg_ZVl&t=876
+# model to store all user account and profile information
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False, unique=True)
@@ -27,14 +27,15 @@ class User(db.Model, UserMixin):
 
     # creates a relationship between posts and Session
     sessions = db.relationship('Session', secondary=user_session_table, backref='author', lazy=True) 
+    
     # players = db.relationship('Player', backref='user', lazy=True)
-
-    # TODO:figure out itsdangrous and python 3.11 compatability issue
+    
+    # method that retrieves the token used to reset the password
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
         return s.dumps({'user_id':self.id}).decode('utf-8')
     
-    @staticmethod #says we're not expecting the self argument
+    @staticmethod # <-says we're not expecting the self argument
     def verify_reset_token(token):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
@@ -66,7 +67,13 @@ class Player(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     position = db.Column(db.String(100), nullable = True, default='Bench Player')
     strong_foot = db.Column(db.String(50), nullable = True, default='No Preferance')
-    
+    pace = db.Column(db.Integer[0,100], nullable=True, default=50)
+    shooting = db.Column(db.Integer[0,100], nullable=True, default=50)
+    passing = db.Column(db.Integer[0,100], nullable=True, default=50)
+    dribbling = db.Column(db.Integer[0,100], nullable=True, default=50)
+    defending = db.Column(db.Integer[0,100], nullable=True, default=50)
+    physicality = db.Column(db.Integer[0,100], nullable=True, default=50)
+
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self): 

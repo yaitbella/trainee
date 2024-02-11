@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
+from flask_migrate import Migrate
 
 
 from trainee.config import Config
@@ -25,6 +26,9 @@ def create_app(config_class=Config):
     bcrypt.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)
+
+    # database migration stuff (https://www.youtube.com/watch?v=uNmWxvvyBGU)
+    migrate = Migrate(app, db)
 
     # import blueprint objects here and register them with our route
     from trainee.users.routes import users

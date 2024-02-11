@@ -7,9 +7,9 @@
         <a class="mr-2" href="{{ url_for('users.user_sessions', username=session.author.username) }}">{{ session.author.username }}</a>
         
         <!-- if the user who posted the session is viewing -->
-        {% if session.session_host == current_user.username %}
+        {% if session.session_host == current_user.username %}  
           <div>
-            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('sessions.update_session', session_id=session.id) }}">Update</a>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('sessions.update_session', session_id=session.id) }}">Edit Session</a>
             <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
           </div>
         <!-- viewing another user's session -->

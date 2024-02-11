@@ -5,9 +5,7 @@
         <div class="card m-3 p-2">
             <div class="col-md-10">
                 <img class="rounded-circle article-img m-2" src="{{ url_for('static', filename='profile_pics/' + 'default.jpeg') }}">
-                {% for author in session.author %}
-                  {{ author.username }}
-                {% endfor %}
+                {{ session.session_host }}
                 <a class="ml-2" href="{{ url_for('users.user_sessions', username=session.author) }}">{{ session.author.username }}</a>
             </div>
             <div class="col-md-10">

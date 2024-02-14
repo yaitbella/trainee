@@ -81,7 +81,7 @@ body {
     font-size: 2.5rem;
   }
 
-  /* @import url("https://fonts.googleapis.com/css?family=Roboto:400,400i,700");
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,400i,700");
 .player-card {
   background: #1c1c4a;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
@@ -174,11 +174,11 @@ body {
   font-weight: 400;
   line-height: 20px;
 } */
-/* .player-container {
+.player-container {
   margin: 50px auto;
   width: 500px;
-} */ */
-/* img {
+} 
+img {
   width: 100%;
   object-fit: cover;
-} */
+}

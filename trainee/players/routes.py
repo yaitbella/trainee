@@ -18,7 +18,8 @@ players=Blueprint('players', __name__) # creates 'players' Blueprint
 @players.route("/player", methods=['GET', 'POST'])
 @login_required
 def player_page():
-    return render_template('player.html')
+    player = current_user.user_player
+    return render_template('player.html', player=player)
     # form = PlayerForm()
 
     # if form.validate_on_submit():    

@@ -27,9 +27,10 @@ class User(db.Model, UserMixin):
 
     # creates a relationship between posts and Session
     sessions = db.relationship('Session', secondary=user_session_table, backref='author', lazy=True) 
-    
-    # players = db.relationship('Player', backref='user', lazy=True)
-    
+
+    # to access Player object through a User object, use UserName.user_player
+    user_player = db.relationship('Player', backref='user', lazy=True, uselist=False)
+
     # method that retrieves the token used to reset the password
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
@@ -57,7 +58,6 @@ class Session(db.Model):
     session_host = db.Column(db.Integer, nullable=False)
     # date_posted = db.Column(db.DateTime, nullable=False, default='datetime.utcnow')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
     participants = db.relationship('User', secondary=user_session_table, backref='joined_sessions', lazy=True)
     
     def __repr__(self): 
@@ -74,7 +74,9 @@ class Player(db.Model):
     defending = db.Column(db.Integer[0,100], nullable=True, default=50)
     physicality = db.Column(db.Integer[0,100], nullable=True, default=50)
 
+    # to access User object through a Player object, use PlayerName.player_user
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    player_user = db.relationship('User', backref='player', lazy=True) 
 
     def __repr__(self): 
-        return f"Player('{self.position}', '{self.strong_foot}')"
+        return f"Player('{self.position}', '{self.strong_foot}', '{self.pace}')"

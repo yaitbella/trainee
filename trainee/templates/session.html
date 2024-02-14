@@ -26,6 +26,7 @@
       <p> <b>Session Date: </b> {{ session.session_date }} at {{ session.session_time }} </p>
       <p> <b>Player Count: </b> {{ session.participants|length + 1}} / 10 </p>
       <ul>
+        <li> {{ session.session_host }} (Host) </li>
         {% for player in session.participants %}
           <li> {{ player.username }} </li>
         {% endfor %}

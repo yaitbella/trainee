@@ -4,7 +4,7 @@ from flask_login import (login_user, login_required,
                          logout_user, current_user)
 
 from trainee import db, bcrypt
-from trainee.models import User, Session
+from trainee.models import User, Session, Player
 from trainee.users.forms import (RegisterForm, LoginForm, UpdateAccountForm, 
                            RequestResetForm, ResetPasswordForm)
 from trainee.users.utils import save_picture, send_reset_email
@@ -45,6 +45,11 @@ def register():
                         password=hashed_password)
         db.session.add(user)
         db.session.commit() 
+
+        # Create a corresponding Player object and associate it with the user
+        player = Player(player_user=user)  # Assuming 'user' is the relationship in the Player model
+        db.session.add(player)
+        db.session.commit()
 
         flash(f'Account created for {form.username.data}!', 'success')
         return redirect(url_for('users.login'))

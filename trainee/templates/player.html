@@ -1,28 +1,21 @@
 {% extends "layout.html" %}
 {% block content %}
-   <p>HIIII</p>
-   <div><span>92</span><span> PAC </span></div>
-   <div><span>90</span><span> DRI </span></div>
-   <div><span>86</span><span> SHO </span></div>
-   <div><span>43</span><span> DEF </span></div>
-   <div><span>86</span><span> PAS </span></div>
-   <div><span>80</span><span> PHY </span></div>
-   <!-- <div class="container">
+   <div class="container">
     <div class="player-card">
       <div class="player-card-main">
         <div class="player-card-header">
           <div class="player-card-header-bg"></div><img class="player-card-image" src="https://cdn.futwiz.com/assets/img/fifa22/faces/50508283.png" alt="" />
         </div>
-        <h1 class="player-card-name">RONALDO</h1>
+        <h1 class="player-card-name">{{ player.player_user.username }}</h1>
         <div class="player-card-attributes">
-          <div class="player-card-attribute"><span class="player-card-attribute__value">92</span><span class="player-card-attribute__name">PAC</span></div>
-          <div class="player-card-attribute"><span class="player-card-attribute__value">90</span><span class="player-card-attribute__name">DRI</span></div>
-          <div class="player-card-attribute"><span class="player-card-attribute__value">86</span><span class="player-card-attribute__name">SHO</span></div>
-          <div class="player-card-attribute"><span class="player-card-attribute__value">43</span><span class="player-card-attribute__name">DEF</span></div>
-          <div class="player-card-attribute"><span class="player-card-attribute__value">86</span><span class="player-card-attribute__name">PAS</span></div>
-          <div class="player-card-attribute"><span class="player-card-attribute__value">80</span><span class="player-card-attribute__name">PHY</span></div>
+          <div class="player-card-attribute"><span class="player-card-attribute__value">{{ player.pace }}</span><span class="player-card-attribute__name">PAC</span></div>
+          <div class="player-card-attribute"><span class="player-card-attribute__value">{{ player.dribbling }}</span><span class="player-card-attribute__name">DRI</span></div>
+          <div class="player-card-attribute"><span class="player-card-attribute__value">{{ player.shooting }}</span><span class="player-card-attribute__name">SHO</span></div>
+          <div class="player-card-attribute"><span class="player-card-attribute__value">{{ player.defending }}</span><span class="player-card-attribute__name">DEF</span></div>
+          <div class="player-card-attribute"><span class="player-card-attribute__value">{{ player.passing }}</span><span class="player-card-attribute__name">PAS</span></div>
+          <div class="player-card-attribute"><span class="player-card-attribute__value">{{ player.physicality }}</span><span class="player-card-attribute__name">PHY</span></div>
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
 {% endblock content %}

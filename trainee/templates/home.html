@@ -1,32 +1,48 @@
 {% extends "layout.html" %}
 {% block content %}
-    {% for session in sessions.items %}
-      <article>
-        <div class="row">
-            <div class="col-md-2">
-                <img class="avatar-lg rounded-circle mx-auto" src="{{ url_for('static', filename='profile_pics/' + session.author.image_file) }}">
-                <a class="ml-2" href="{{ url_for('users.user_sessions', username=session.author.username) }}">{{ session.author.username }}</a>
-                <p class="article-content">{{ session.session_time }}</p>
-            </div>
-            <div class="col-md-10">
-                <h4><a class="article-title" href="{{ url_for('sessions.session', session_id=session.id) }}">{{ session.title }}</a></h4>
-                <p class="article-content">{{ session.location }}</p>
-                <p class="article-content">{{ session.skillFocus }}</p>
-                <p class="article-content">{{ session.session_date }}</p>
-            </div>
-        </div>
-    </article>
-    {% endfor %}
 
-    {% for page_num in sessions.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-      {% if page_num %}
-        {% if sessions.page == page_num %}
-          <a class= "btn btn-info mb-4" href= "{{ url_for('main.home', page=page_num) }}"> {{ page_num }}</a>
+    {% if current_user.is_authenticated %}
+      {% for session in sessions %}
+        <article>
+          <div class="card m-3 p-2">
+              <div class="col-md-10">
+                  <img class="rounded-circle article-img m-2" src="{{ url_for('static', filename='profile_pics/' + 'default.jpeg') }}">
+                  {{ session.session_host }}
+                  <a class="ml-2" href="{{ url_for('users.user_sessions', username=session.author) }}">{{ session.author.username }}</a>
+              </div>
+              <div class="col-md-10">
+                  <h4><a class="article-title" href="{{ url_for('sessions.session', session_id=session.id) }}">{{ session.title }}</a></h4>
+                  <p> <b>Location: </b> {{ session.location }} </p>
+                  <p> <b>Session Focus: </b> {{ session.skillFocus }} </p>
+                  <p> <b>Session Date: </b> {{ session.session_date }} at {{ session.session_time.strftime('%H:%M') }} </p>
+                  <p> <b>Player Count: </b> {{ session.participants|length + 1}} / 10 </p>
+              </div>
+          </div>
+      </article>
+      {% endfor %}
+      {% for page_num in sessions.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        {% if page_num %}
+          {% if sessions.page == page_num %}
+            <a class= "btn btn-info mb-4" href= "{{ url_for('main.home', page=page_num) }}"> {{ page_num }}</a>
+          {% else %}
+            <a class= "btn btn-outline-info mb-4" href= "{{ url_for('main.home', page=page_num) }}"> {{ page_num }}</a>
+          {% endif %}
         {% else %}
-          <a class= "btn btn-outline-info mb-4" href= "{{ url_for('main.home', page=page_num) }}"> {{ page_num }}</a>
+          ...
         {% endif %}
-      {% else %}
-        ...
-      {% endif %}
-    {% endfor %}
+      {% endfor %}
+    {% else %}
+      <div class="container-landing">
+        <div class="img-landing">
+          <img src="{{ url_for('static', filename='landingImage.avif') }}">
+        </div>
+        <div class="text-landing" style="margin-top: 20px; margin-bottom: 20px;">
+          <h1> Welcome to Trainee! </h1>
+          <h4> Are you washed? </h4>
+          <h3> Liar ! </h3>
+          <h4> Join the Trainee community to start operation unwash </h4>
+          <p> Click the 'Get Started' in the top corner to begin</p>
+        </div>
+      </div>
+    {% endif %}
 {% endblock content %}

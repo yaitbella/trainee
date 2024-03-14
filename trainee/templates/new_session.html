@@ -3,7 +3,7 @@
 {% block content %}
     <div class="content-section">
         <form method="POST" action="">
-            {{ form.hidden_tag() }}
+            {{ form.hidden_tag() }} <!-- used to include any hidden fields in form in the HTML representation of the form -->
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4"> {{ legend }} </legend>
                 <div class="form-group">

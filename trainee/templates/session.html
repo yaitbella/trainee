@@ -1,30 +1,41 @@
 {% extends "layout.html" %}
 {% block content %}
   <article class="media content-section">
-    <img class="avatar-xl rounded-circle mx-auto" src="{{ url_for('static', filename='profile_pics/' + session.author.image_file) }}">
+    <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}">
     <div class="media-body">
       <div class="article-metadata">
         <a class="mr-2" href="{{ url_for('users.user_sessions', username=session.author.username) }}">{{ session.author.username }}</a>
-        {% if session.author == current_user %}
+        
+        <!-- if the user who posted the session is viewing -->
+        {% if session.session_host == current_user.username %}  
           <div>
-            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('sessions.update_session', session_id=session.id) }}">Update</a>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('sessions.update_session', session_id=session.id) }}">Edit Session</a>
+            <a class="btn btn-success btn-sm mt-1 mb-1" href="{{ url_for('sessions.complete_session', session_id=session.id) }}">Session Complete</a>
             <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
           </div>
+        <!-- viewing another user's session -->
         {% else %}
           <div>
-            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="#"> Join Session </a>
+            <a class="btn btn-success" href="{{ url_for('sessions.join_session', session_id=session.id) }}">Join Session!</a>
           </div>
         {% endif %}
       </div>
-      <h2 class="article-title">{{ session.title }}</h2>
-      <p> {{ session.location }} </p>
-      <p> {{ session.skillFocus }} </p>
-      <p> {{ session.session_date }} </p>
-      <p> {{ session.session_time }} </p>
+      <h2 class="article-title"> <u> {{ session.title }} </u> </h2>
+      <p> <b>Session Host: </b> {{ session.session_host }} </p>
+      <p> <b>Location: </b> {{ session.location }} </p>
+      <p> <b>Session Focus: </b> {{ session.skillFocus }} </p>
+      <p> <b>Session Date: </b> {{ session.session_date }} at {{ session.session_time }} </p>
+      <p> <b>Player Count: </b> {{ session.participants|length + 1}} / 10 </p>
+      <ul>
+        <li> {{ session.session_host }} (Host) </li>
+        {% for player in session.participants %}
+          <li> {{ player.username }} </li>
+        {% endfor %}
+      </ul>
     </div>
   </article>
 
-  <!-- Modal -->
+  <!-- Modal that isn't workign right now -->
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">

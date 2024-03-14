@@ -5,22 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSS Bootstrap Link-->
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css' )}}"> -->
-
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="120x120" href="/static/volt_boostrap/apps/static/assets/img/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/static/volt_boostrap/apps/static/assets/img/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/static/volt_boostrap/apps/static/assets/img/favicon/apple-touch-icon.png">
-    <link rel="manifest" href="/static/volt_boostrap/apps/static/assets/img/favicon/site.webmanifest">
-    <link rel="mask-icon" href="/static/volt_boostrap/apps/static/assets/img/favicon/safari-pinned-tab.svg" color="#ffffff">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="theme-color" content="#ffffff">
-
-    <link type="text/css" href="/static/volt_boostrap/apps/static/assets/vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
-
-    <link type="text/css" href="/static/volt_boostrap/apps/static/assets/vendor/notyf/notyf.min.css" rel="stylesheet">
-    <link type="text/css" href="/static/volt_boostrap/apps/static/assets/css/volt.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css' )}}">
 
 
     {% if title %}
@@ -31,51 +17,48 @@
 </head>
 <body>
     <header class="header-global">
-        <nav id="navbar-main" aria-label="Primary navigation" class="navbar navbar-main navbar-expand-lg navbar-theme-primary pt-4 navbar-dark">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
             <div class="container position-relative">
                 <div class="navbar-collapse collapse mr-auto" id="navbar_global">
                     <ul class="navbar-nav navbar-nav-hover align-items-lg-center">
                         {% if current_user.is_authenticated %}
                             <li class="nav-item mr-2">
-                                <a class="nav-item nav-link" href="{{ url_for('main.home')}}">Home</a>
+                                <a class="nav-item nav-link text-white" href="{{ url_for('main.home')}}">Home</a>
                             </li>
                             <li class="nav-item mr-2">
-                                <a class="nav-item nav-link" href="{{ url_for('users.profile')}}">Profile</a> 
+                                <a class="nav-item nav-link text-white" href="{{ url_for('users.profile')}}">Profile</a> 
+                            </li>
+                            <li class="nav-item mr-2">
+                                <a class="nav-item nav-link text-white" href="{{ url_for('players.player_page')}}"> My Player</a> 
                             </li>
                         {% else %}
                             <li class="nav-item mr-2">
-                                <a class="nav-item nav-link" href="{{ url_for('main.home')}}">Home</a>
+                                <a class="nav-item nav-link text-white" href="{{ url_for('main.home')}}">Home</a>
                             </li>
                             <li class="nav-item mr-2">
-                                <a class="nav-item nav-link" href="{{ url_for('users.login')}}">Profile</a> 
+                                <a class="nav-item nav-link text-white" href="{{ url_for('users.login')}}">Profile</a> 
                             </li>
                         {% endif %}
                     </ul>
                 </div>
                 <div class="d-flex align-items-center ml-auto">
                     {% if current_user.is_authenticated %}
-                        <a href="{{ url_for('sessions.new_session')}}" class="btn btn-secondary text-dark mr-md-3">
+                        <a href="{{ url_for('sessions.new_session')}}" class="btn btn-warning text-dark m-2">
                         Create New Session
                         </a>
-                        <a href="{{ url_for('users.logout')}}" class="btn btn-gray-100 text-dark mr-md-3">
+                        <a href="{{ url_for('users.logout')}}" class="btn btn-light text-dark mr-md-3">
                         Logout
                         </a>
                     {% else %}
                         <span class="fas fa-rocket mr-2">
-                            <a href="{{ url_for('users.register')}}" class="btn btn-secondary text-dark mr-md-3">Get Started!</a>
-                            <a href="{{ url_for('users.login')}}" class="btn btn-white text-dark mr-md-3"> Sign In </a>
+                            <a href="{{ url_for('users.register')}}" class="btn btn-warning text-dark mr-md-3">Get Started!</a>
+                            <a href="{{ url_for('users.login')}}" class="btn btn-light text-dark mr-md-3"> Sign In </a>
                         </span>
                     {% endif %}
                 </div>
             </div>
         </nav>
     </header>
-
-    <main role="main" class="container">
-    <div class="row">
-        <div class="col-md-8">
-        
-            <!-- creates a temporary success message after making account -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -86,6 +69,11 @@
             {% endif %}
         {% endwith %}
         {% block content %}{% endblock %}
+
+    <!-- <main role="main" class="container">
+    <div class="row">
+        <div class="col-md-8">
+        creates a temporary success message after making account
         </div>
         <div class="col-md-4">
         <div class="content-section">
@@ -101,7 +89,7 @@
         </div>
         </div>
     </div>
-    </main>
+    </main> -->
 
     <!-- JS Boostrap Link -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>

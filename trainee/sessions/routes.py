@@ -4,8 +4,9 @@ from flask_login import login_required, current_user
 from trainee import db
 from trainee.models import Session
 from trainee.sessions.forms import SessionForm
+from trainee.sessions.utils import update_player_stats
 
-sessions=Blueprint('sessions', __name__)
+sessions=Blueprint('sessions', __name__) # creates 'sessions' Blueprint
 
 @sessions.route('/session/new', methods=['GET','POST'])
 @login_required
@@ -17,8 +18,12 @@ def new_session():
                         user_id = current_user.id,
                         skillFocus = form.skillFocus.data,
                         session_date=form.session_date.data, 
-                        session_time=form.session_time.data)
+                        session_time=form.session_time.data,
+                        session_host=current_user.username)
+        
         db.session.add(sesh)
+        session = Session.query.get_or_404(sesh.id)
+        current_user.sessions.append(session)
         db.session.commit()
         flash('your session has been created!', 'success')
         return redirect(url_for('main.home'))
@@ -39,7 +44,7 @@ def session(session_id):
 @login_required
 def update_session(session_id):
     session = Session.query.get_or_404(session_id)
-    if session.author != current_user:
+    if session.session_host != current_user.username:
         abort(403)
     form = SessionForm()
     if form.validate_on_submit():
@@ -67,3 +72,29 @@ def delete_session(session_id):
     db.session.commit()
     flash('Your session has been deleted!', 'success')
     return redirect(url_for('main.home'))
+
+@sessions.route("/session/<int:session_id>/join", methods=['GET','POST'])
+def join_session(session_id):
+    session = Session.query.get_or_404(session_id)
+    if current_user in session.participants:
+        flash('You have already joined the session!', 'warning')
+    else:
+        current_user.sessions.append(session)
+        db.session.commit()
+
+        flash('You have joined the session!', 'success')
+    return redirect(url_for('sessions.session', session_id=session.id))
+
+@sessions.route("/session/<int:session_id>/complete", methods=['GET','POST'])
+def complete_session(session_id):
+    session = Session.query.get_or_404(session_id)
+    sessionUsers = session.participants
+    errorPlayers = []
+
+    if sessionUsers:
+        # for player in sessionPlayers: 
+        update_player_stats(sessionUsers, session.skillFocus, errorPlayers)
+        db.session.commit()
+
+    flash('Congratulations, stats has been updated for all players', 'success')        
+    return redirect(url_for('sessions.session', session_id=session.id))

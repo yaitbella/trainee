@@ -1,4 +1,4 @@
-from flask import (render_template, url_for, redirect, 
+from flask import (render_template, abort, url_for, redirect, 
                    flash, request, Blueprint)
 from flask_login import (login_user, login_required, 
                          logout_user, current_user)
@@ -19,6 +19,8 @@ players=Blueprint('players', __name__) # creates 'players' Blueprint
 @login_required
 def player_page():
     player = current_user.user_player
+    if player is None: 
+        abort(404)
     return render_template('player.html', player=player)
     # form = PlayerForm()
 

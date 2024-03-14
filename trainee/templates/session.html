@@ -10,6 +10,7 @@
         {% if session.session_host == current_user.username %}  
           <div>
             <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('sessions.update_session', session_id=session.id) }}">Edit Session</a>
+            <a class="btn btn-success btn-sm mt-1 mb-1" href="{{ url_for('sessions.complete_session', session_id=session.id) }}">Session Complete</a>
             <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
           </div>
         <!-- viewing another user's session -->

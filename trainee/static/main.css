@@ -182,3 +182,24 @@ img {
   width: 100%;
   object-fit: cover;
 }
+
+.container-landing{
+  display: flex;
+  /* align-items: center; */
+  /* justify-content: center; */
+}
+
+.img-landing{
+  max-width: 40%;
+  max-height: 80%;
+  float: left;
+}
+
+.text-landing {
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-left: 20px;
+  padding-top: 20%;
+  float: right;
+}

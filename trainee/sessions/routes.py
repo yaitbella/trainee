@@ -4,6 +4,7 @@ from flask_login import login_required, current_user
 from trainee import db
 from trainee.models import Session
 from trainee.sessions.forms import SessionForm
+from trainee.sessions.utils import update_player_stats
 
 sessions=Blueprint('sessions', __name__) # creates 'sessions' Blueprint
 
@@ -21,6 +22,8 @@ def new_session():
                         session_host=current_user.username)
         
         db.session.add(sesh)
+        session = Session.query.get_or_404(sesh.id)
+        current_user.sessions.append(session)
         db.session.commit()
         flash('your session has been created!', 'success')
         return redirect(url_for('main.home'))
@@ -78,5 +81,20 @@ def join_session(session_id):
     else:
         current_user.sessions.append(session)
         db.session.commit()
+
         flash('You have joined the session!', 'success')
+    return redirect(url_for('sessions.session', session_id=session.id))
+
+@sessions.route("/session/<int:session_id>/complete", methods=['GET','POST'])
+def complete_session(session_id):
+    session = Session.query.get_or_404(session_id)
+    sessionUsers = session.participants
+    errorPlayers = []
+
+    if sessionUsers:
+        # for player in sessionPlayers: 
+        update_player_stats(sessionUsers, session.skillFocus, errorPlayers)
+        db.session.commit()
+
+    flash('Congratulations, stats has been updated for all players', 'success')        
     return redirect(url_for('sessions.session', session_id=session.id))

@@ -11,28 +11,40 @@ from trainee.users.utils import save_picture, send_reset_email
 
 users=Blueprint('users', __name__)
 
+# Route for user login
 @users.route("/login", methods=['GET', 'POST']) 
 def login():
-
+    # redirect to home page is user is already logged in
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
-        
-    form = LoginForm()
+
+    form = LoginForm() # Create an instance of the login form
+
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(email=form.email.data).first() # find the user by their email in databse
+        
+        # succesful login
         if user and bcrypt.check_password_hash(user.password, form.password.data):
+            # Log in the user and set the 'remember me' option if provided
             login_user(user, remember=form.remember.data)
+            
+            # Get the next page URL from the 'next' query parameter if it exists, else redirect to home page
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('main.home'))
         else:
+            # If login is unsuccessful, show a flash message
             flash('Login Unsuccessful. Please check email and password', 'danger')
+    
+    # Print form validation errors (for debugging purposes)
     print(form.errors)
+    
+    # Render the login template with the login form
     return render_template('login.html', title='Login', form=form)
 
 
 @users.route("/register", methods=['GET', 'POST']) 
 def register():
-    if current_user.is_authenticated:
+    if current_user.is_authenticated: # redirect to home page if user already logged in
         return redirect(url_for('main.home'))
 
     form = RegisterForm()
@@ -47,7 +59,7 @@ def register():
         db.session.commit() 
 
         # Create a corresponding Player object and associate it with the user
-        player = Player(player_user=user)  # Assuming 'user' is the relationship in the Player model
+        player = Player(player_user=user)  # Assuming 'user' is the relationship in the Player model (see models.py)
         db.session.add(player)
         db.session.commit()
 

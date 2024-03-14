@@ -5,9 +5,10 @@
 
 from trainee import db, login_manager
 from flask import current_app
-from flask_login import UserMixin # add required attributes and methods for loading user
+from flask_login import UserMixin
 from itsdangerous import URLSafeTimedSerializer as Serializer
 
+# allows Flask-Login to load user objects from database
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -25,10 +26,10 @@ class User(db.Model, UserMixin):
     image_file = db.Column(db.String(20), nullable=False, default = 'default.jpeg')
     password = db.Column(db.String(80), nullable=False)
 
-    # creates a relationship between posts and Session
+    # to accesss Session object through a User object, use ___.sessions
     sessions = db.relationship('Session', secondary=user_session_table, backref='author', lazy=True) 
 
-    # to access Player object through a User object, use UserName.user_player
+    # to access Player object through a User object, use 'UserObj'.user_player
     user_player = db.relationship('Player', backref='user', lazy=True, uselist=False)
 
     # method that retrieves the token used to reset the password
@@ -37,6 +38,7 @@ class User(db.Model, UserMixin):
         return s.dumps({'user_id':self.id}).decode('utf-8')
     
     @staticmethod # <-says we're not expecting the self argument
+    # method that verifies reset token
     def verify_reset_token(token):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
@@ -45,7 +47,8 @@ class User(db.Model, UserMixin):
             return None
         return User.query.get(user_id)
     
-    def __repr__(self): # how our object is printed when we print User object
+    # defines how our object is printed when we print a User object
+    def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
 class Session(db.Model):
@@ -60,6 +63,7 @@ class Session(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     participants = db.relationship('User', secondary=user_session_table, backref='joined_sessions', lazy=True)
     
+    # defines how our object is printed when we print a Session object
     def __repr__(self): 
         return f"Session('{self.title}', '{self.location}', '{self.skillFocus}')"
     
@@ -78,5 +82,6 @@ class Player(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     player_user = db.relationship('User', backref='player', lazy=True) 
 
+    # defines how our object is printed when we print a Player object
     def __repr__(self): 
         return f"Player('{self.position}', '{self.strong_foot}', '{self.pace}')"

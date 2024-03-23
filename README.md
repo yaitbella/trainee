@@ -23,13 +23,13 @@ cd traineewebapp
 ```
 Create a virtual environment: See [Python Docs](https://docs.python.org/3/library/venv.html)
 ```
-python3 -m venv venv
+python3 -m venv myenv
 ```
 Activate the virtual environment:
 - On Windows: 
-`.venv\Scripts\activate`
+myenv\Scripts\activate`
 - On macOS and Linux: 
-`source .venv/bin/activate`
+`source myenv/bin/activate`
     
 Install dependencies: 
 ```
